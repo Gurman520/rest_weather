@@ -1,3 +1,6 @@
+from openpyxl import Workbook
+
+
 def get_weather_description(code):
     descriptions = {
         0: "Clear sky",
@@ -38,3 +41,29 @@ def degrees_to_direction(degrees):
                   "Ю", "ЮЗ", "З", "СЗ"]
     index = int((int(degrees) + 22.5) / 45) % 8
     return directions[index]
+
+
+def records_to_xlsx(records, filename):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Current Weather"
+
+    # Заголовки таблицы
+    columns = ["ID", "Time", "Apparent Temperature", "Precipitation Value", "Precipitation",
+               "Surface Pressure", "Wind Speed", "Wind Direction"]
+    ws.append(columns)
+
+    for record in records:
+        row = [
+            record.id,
+            record.time,
+            record.apparent_temperature,
+            record.precipitation_value,
+            record.precipitation,
+            record.surface_pressure,
+            record.wind_speed,
+            record.wind_direction
+        ]
+        ws.append(row)
+
+    wb.save(filename)

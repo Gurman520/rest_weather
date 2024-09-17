@@ -20,7 +20,7 @@ class CurrentWeather(Base):
 
 DATABASE_URL = "sqlite:///./weather.db"
 
-engine = create_engine(DATABASE_URL, echo=True)
+engine = create_engine(DATABASE_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
@@ -44,3 +44,9 @@ def save_to_db(session, data):
         db.commit()
     finally:
         db.close()
+
+
+def get_last_10_records(session):
+    with session() as db:
+        records = db.query(CurrentWeather).order_by(CurrentWeather.id.desc()).limit(10).all()
+        return records
