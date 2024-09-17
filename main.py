@@ -12,6 +12,12 @@ async def fetch(session, url):
 
 
 async def periodic_api_call(url, interval):
+    '''
+    Функция циклического вызова запроса
+    :param url: url - адрес сервиса погоды
+    :param interval: число - количество секунд между запросами
+    :return:
+    '''
     async with aiohttp.ClientSession() as session:
         while True:
             try:
@@ -24,6 +30,10 @@ async def periodic_api_call(url, interval):
 
 
 def handle_user_input():
+    '''
+    Функция обработки команд пользователя из консоли
+    :return:
+    '''
     while True:
         print("Чтобы выгрузить отчет, введите команду - download to excel\nЧтобы завершить работу, введите - exit")
         user_input = input("Enter your command: ")
