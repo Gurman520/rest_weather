@@ -5,6 +5,7 @@ from support import get_weather_description, degrees_to_direction
 Base = declarative_base()
 
 
+# Класс, что описывает структуру таблицы в БД
 class CurrentWeather(Base):
     __tablename__ = "current_weather"
 
@@ -25,10 +26,20 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 
 def init_db():
+    '''
+    Функция инициализации БД
+    :return:
+    '''
     Base.metadata.create_all(bind=engine)
 
 
 def save_to_db(session, data):
+    '''
+    Функция записи новых значений в БД
+    :param session:
+    :param data: Данные для записи в БД
+    :return:
+    '''
     db = session()
     try:
         new_record = CurrentWeather(
@@ -47,6 +58,11 @@ def save_to_db(session, data):
 
 
 def get_last_10_records(session):
+    '''
+    Функция получения данных из БД
+    :param session:
+    :return:
+    '''
     with session() as db:
         records = db.query(CurrentWeather).order_by(CurrentWeather.id.desc()).limit(10).all()
         return records

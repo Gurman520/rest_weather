@@ -32,10 +32,11 @@ def handle_user_input():
             print("Начинаю выгрузку отчета")
             records_to_xlsx(db.get_last_10_records(session=db.SessionLocal), "output.xlsx")
             print("Выгрузка отчета успешно завершена")
-
         elif user_input.lower() == "exit":
             print("Завершение программы...")
             exit()
+        else:
+            print("Команда не найдена. Попробуйте еще раз")
 
 
 def start_event_loop(loop):
@@ -44,9 +45,9 @@ def start_event_loop(loop):
 
 
 def main():
-    url = "https://api.open-meteo.com/v1/forecast?latitude=55.3333&longitude=86.0833&current=apparent_temperature,precipitation,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto&forecast_days=1"  # Замените на ваш API endpoint
+    url = "https://api.open-meteo.com/v1/forecast?latitude=55.6878&longitude=37.3684&current=apparent_temperature,precipitation,weather_code,surface_pressure,wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=auto&forecast_days=1"
     db.init_db()
-    interval = 10  # 3 minutes
+    interval = 180  # 3 minutes
 
     # Создаем новый событийный цикл для выполнения асинхронных задач
     new_loop = asyncio.new_event_loop()
@@ -57,7 +58,6 @@ def main():
 
     # Запускаем асинхронную задачу в новом событийном цикле
     asyncio.run_coroutine_threadsafe(periodic_api_call(url, interval), new_loop)
-
     handle_user_input()
 
 
